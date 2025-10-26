@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PiClientV1.Views.HomePage"
+             Title="Главная">
+
+	<ScrollView>
+		<VerticalStackLayout Padding="30" Spacing="25">
+
+			<!-- Заголовок -->
+			<Frame BackgroundColor="#512BD4" Padding="20" HorizontalOptions="Fill">
+				<VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+					<Label Text="π-Исчисление"
+                           TextColor="White"
+                           FontSize="32"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+					<Label Text="Обучающая система"
+                           TextColor="#E3F2FD"
+                           FontSize="18"
+                           HorizontalOptions="Center"/>
+				</VerticalStackLayout>
+			</Frame>
+
+			<!-- Приветствие -->
+			<Frame BackgroundColor="#E3F2FD" Padding="20" BorderColor="#BBDEFB">
+				<VerticalStackLayout Spacing="15">
+					<Label Text="Добро пожаловать!"
+                           FontSize="22"
+                           FontAttributes="Bold"
+                           TextColor="#1976D2"/>
+					<Label Text="Интерактивная система для изучения π-исчисления Роберта Милнера. Исследуйте мир параллельных процессов и коммуникаций через интуитивный интерфейс и практические примеры."
+                           TextColor="#424242"
+                           LineBreakMode="WordWrap"/>
+				</VerticalStackLayout>
+			</Frame>
+
+			<!-- Быстрый старт -->
+			<Frame BackgroundColor="#FFF3E0" Padding="20" BorderColor="#FFCCBC">
+				<VerticalStackLayout Spacing="15">
+					<Label Text="🚀 Быстрый старт"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#E65100"/>
+
+					<Label Text="Выберите раздел в меню слева чтобы начать изучение:"
+                           TextColor="#424242"
+                           LineBreakMode="WordWrap"/>
+
+					<VerticalStackLayout Spacing="10">
+						<Button Text="📝 Изучить нотацию"
+                                BackgroundColor="#512BD4"
+                                TextColor="White"
+                                HeightRequest="50"
+                                Clicked="OnNotationClicked"/>
+
+						<Button Text="📚 Изучить теорию"
+                                BackgroundColor="#2196F3"
+                                TextColor="White"
+                                HeightRequest="50"
+                                Clicked="OnTheoryClicked"/>
+
+						<Button Text="🎯 Решать задачи"
+                                BackgroundColor="#4CAF50"
+                                TextColor="White"
+                                HeightRequest="50"
+                                Clicked="OnProblemsClicked"/>
+
+						<Button Text="⚡ Попробовать эмулятор"
+                                BackgroundColor="#FF9800"
+                                TextColor="White"
+                                HeightRequest="50"
+                                Clicked="OnEmulatorClicked"/>
+					</VerticalStackLayout>
+
+					<Button Text="ℹ️ Подробнее о системе"
+                            BackgroundColor="#9C27B0"
+                            TextColor="White"
+                            HeightRequest="40"
+                            Clicked="OnAboutClicked"/>
+
+				</VerticalStackLayout>
+			</Frame>
+
+			<!-- Возможности системы -->
+			<Frame BackgroundColor="#F3E5F5" Padding="20" BorderColor="#E1BEE7">
+				<VerticalStackLayout Spacing="15">
+					<Label Text="Возможности системы:"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#7B1FA2"/>
+
+					<VerticalStackLayout Spacing="8">
+						<HorizontalStackLayout Spacing="8">
+							<Label Text="•" TextColor="#7B1FA2"/>
+							<Label Text="Изучение синтаксиса π-исчисления"
+                                   TextColor="#424242"
+                                   LineBreakMode="WordWrap"/>
+						</HorizontalStackLayout>
+
+						<HorizontalStackLayout Spacing="8">
+							<Label Text="•" TextColor="#7B1FA2"/>
+							<Label Text="Теоретические материалы с примерами"
+                                   TextColor="#424242"
+                                   LineBreakMode="WordWrap"/>
+						</HorizontalStackLayout>
+
+						<HorizontalStackLayout Spacing="8">
+							<Label Text="•" TextColor="#7B1FA2"/>
+							<Label Text="Практические задания разной сложности"
+                                   TextColor="#424242"
+                                   LineBreakMode="WordWrap"/>
+						</HorizontalStackLayout>
+
+						<HorizontalStackLayout Spacing="8">
+							<Label Text="•" TextColor="#7B1FA2"/>
+							<Label Text="Интерактивный эмулятор процессов"
+                                   TextColor="#424242"
+                                   LineBreakMode="WordWrap"/>
+						</HorizontalStackLayout>
+					</VerticalStackLayout>
+				</VerticalStackLayout>
+			</Frame>
+
+			<!-- Контакты -->
+			<Frame BackgroundColor="#E8F5E8" Padding="20" BorderColor="#C8E6C9">
+				<VerticalStackLayout Spacing="15">
+					<Label Text="Контакты"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#2E7D32"/>
+
+					<VerticalStackLayout Spacing="12">
+						<!-- Авторы -->
+						<HorizontalStackLayout Spacing="12">
+							<Label Text="👨‍💻 :"
+                                   FontAttributes="Bold"
+                                   TextColor="#424242"
+                                   WidthRequest="120"/>
+							<Label Text="Сердюков Кирилл, Корнишев Даниил"
+                                   TextColor="#424242"
+                                   LineBreakMode="WordWrap"/>
+						</HorizontalStackLayout>
+
+						<!-- Почта -->
+						<HorizontalStackLayout Spacing="12">
+							<Label Text="📧 :"
+                                   FontAttributes="Bold"
+                                   TextColor="#424242"
+                                   WidthRequest="120"/>
+							<Label Text="doddadid@gmail.com"
+                                   TextColor="#424242"/>
+						</HorizontalStackLayout>
+
+						<!-- Организация -->
+						<HorizontalStackLayout Spacing="12">
+							<Label Text="🏛️ :"
+                                   FontAttributes="Bold"
+                                   TextColor="#424242"
+                                   WidthRequest="120"/>
+							<Label Text="НИЯУ МИФИ. Лаборатория ФОИТ"
+                                   TextColor="#424242"
+                                   LineBreakMode="WordWrap"/>
+						</HorizontalStackLayout>
+					</VerticalStackLayout>
+				</VerticalStackLayout>
+			</Frame>
+
+		</VerticalStackLayout>
+	</ScrollView>
+
+</ContentPage>

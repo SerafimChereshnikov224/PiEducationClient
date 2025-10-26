@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PiClientV1.Views.EmulatorPage"
+             Title="Эмулятор">
+
+	<ScrollView>
+		<VerticalStackLayout Spacing="20" Padding="20">
+
+			<!-- Заголовок -->
+			<Label Text="⚡ Эмулятор π-исчисления"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="#FFD700"/>
+
+			<!-- Ввод процесса + Управление выполнением -->
+			<Frame BackgroundColor="#E3F2FD" Padding="15">
+				<VerticalStackLayout Spacing="15">
+					<!-- Заголовок с кнопкой примеров -->
+					<Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+						<Label Text="Введите процесс:"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#1976D2"
+                               VerticalOptions="Center"/>
+
+						<Button x:Name="ExamplesButton"
+                                Grid.Column="1"
+                                Text="?"
+                                BackgroundColor="#9C27B0"
+                                TextColor="White"
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                CornerRadius="20"
+                                FontSize="16"
+                                FontAttributes="Bold"
+                                Clicked="OnExamplesClicked"/>
+					</Grid>
+
+					<Entry x:Name="ProcessInput"
+                           Placeholder="a![b].0 | a?(x).0"
+                           FontSize="14"
+                           TextColor="Black"/>
+
+					<!-- Кнопки запуска и сброса слева-справа -->
+					<Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+						<Button x:Name="StartButton"
+                                Text="▶️ Запустить"
+                                BackgroundColor="#4CAF50"
+                                TextColor="White"
+                                Clicked="OnStartProcessClicked"/>
+
+						<Button x:Name="ResetButton"
+                                Grid.Column="1"
+                                Text="🔄 Сбросить"
+                                BackgroundColor="#FF9800"
+                                TextColor="White"
+                                Clicked="OnResetClicked"/>
+					</Grid>
+
+					<!-- Управление выполнением - только кнопка шага -->
+					<Button x:Name="StepButton"
+                            Text="⏭️ Сделать шаг"
+                            BackgroundColor="#2196F3"
+                            TextColor="White"
+                            IsEnabled="False"
+                            Clicked="OnStepClicked"/>
+
+					<Label x:Name="SessionInfoLabel"
+                           Text="Сессия не запущена"
+                           FontSize="12"
+                           TextColor="#666"/>
+				</VerticalStackLayout>
+			</Frame>
+
+			<!-- Состояние процесса -->
+			<Frame BackgroundColor="#F8F9FA" Padding="15" BorderColor="#E0E0E0">
+				<VerticalStackLayout Spacing="15">
+					<Label Text="🛠️ Состояние процесса"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="#2C3E50"/>
+
+					<Label x:Name="CurrentStateLabel"
+                           Text="Введите процесс и нажмите 'Запустить'"
+                           FontSize="14"
+                           LineBreakMode="WordWrap"
+                           TextColor="#34495E"/>
+
+					<Label x:Name="LastActionLabel"
+                           Text="Последнее действие: —"
+                           FontSize="12"
+                           TextColor="#27AE60"/>
+
+					<Label x:Name="CompletionLabel"
+                           Text="Статус: Ожидание запуска"
+                           FontSize="12"
+                           TextColor="#E74C3C"/>
+				</VerticalStackLayout>
+			</Frame>
+
+			<!-- Параллельные действия -->
+			<Frame BackgroundColor="#F3E5F5" Padding="15" BorderColor="#E0E0E0">
+				<VerticalStackLayout Spacing="10">
+					<Label Text="🚝 Параллельные действия"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="#7B1FA2"/>
+
+					<ListView x:Name="ParallelActionsList"
+                              HeightRequest="120"
+                              HasUnevenRows="True">
+						<ListView.ItemTemplate>
+							<DataTemplate>
+								<ViewCell>
+									<Label Text="{Binding .}"
+                                           FontSize="12"
+                                           Margin="10,5"
+                                           TextColor="#4A148C"/>
+								</ViewCell>
+							</DataTemplate>
+						</ListView.ItemTemplate>
+					</ListView>
+				</VerticalStackLayout>
+			</Frame>
+
+			<!-- История выполнения -->
+			<Frame BackgroundColor="#FFF3E0" Padding="15" BorderColor="#E0E0E0">
+				<VerticalStackLayout Spacing="10">
+					<Label Text="🕚 История выполнения"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="#E65100"/>
+
+					<ListView x:Name="HistoryList"
+                              HeightRequest="120"
+                              HasUnevenRows="True">
+						<ListView.ItemTemplate>
+							<DataTemplate>
+								<ViewCell>
+									<Label Text="{Binding .}"
+                                           FontSize="11"
+                                           Margin="10,2"
+                                           TextColor="#BF360C"/>
+								</ViewCell>
+							</DataTemplate>
+						</ListView.ItemTemplate>
+					</ListView>
+				</VerticalStackLayout>
+			</Frame>
+
+		</VerticalStackLayout>
+	</ScrollView>
+
+</ContentPage>

@@ -3,12 +3,64 @@
     x:Class="PiClientV1.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:PiClientV1"
-    Title="PiClientV1">
+    xmlns:views="clr-namespace:PiClientV1.Views"
+    FlyoutBehavior="Flyout"
+    Title="π-Исчисление">
 
-    <ShellContent
-        Title="Главная"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <Shell.FlyoutHeader>
+        <Grid HeightRequest="120" BackgroundColor="#512BD4">
+            <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+                <Label Text="π" 
+                       TextColor="White" 
+                       FontSize="36"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"/>
+                <Label Text="Обучающая система" 
+                       TextColor="#E3F2FD" 
+                       FontSize="14"
+                       HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+        </Grid>
+    </Shell.FlyoutHeader>
+
+    <FlyoutItem Title="🏠 Главная">
+        <ShellContent Route="HomePage">
+            <ShellContent.Content>
+                <views:HomePage />
+            </ShellContent.Content>
+        </ShellContent>
+    </FlyoutItem>
+
+    <FlyoutItem Title="📝 Нотация">
+        <ShellContent Route="NotationPage">
+            <ShellContent.Content>
+                <views:NotationPage />
+            </ShellContent.Content>
+        </ShellContent>
+    </FlyoutItem>
+
+    <FlyoutItem Title="📚 Теория">
+        <ShellContent Route="TheoryPage">
+            <ShellContent.Content>
+                <views:TheoryPage />
+            </ShellContent.Content>
+        </ShellContent>
+    </FlyoutItem>
+
+    <FlyoutItem Title="🎯 Задачник">
+        <ShellContent Route="ProblemsPage">
+            <ShellContent.Content>
+                <views:ProblemsPage />
+            </ShellContent.Content>
+        </ShellContent>
+    </FlyoutItem>
+
+    <FlyoutItem Title="⚡ Эмулятор">
+        <ShellContent Route="EmulatorPage">
+            <ShellContent.Content>
+                <views:EmulatorPage />
+            </ShellContent.Content>
+        </ShellContent>
+    </FlyoutItem>
 
 </Shell>

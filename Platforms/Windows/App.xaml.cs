@@ -10,12 +10,24 @@ namespace PiClientV1.WinUI
     /// </summary>
     public partial class App : MauiWinUIApplication
     {
-        /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
         public App()
         {
+            // Добавляем обработчик ДО InitializeComponent
+            this.UnhandledException += (sender, e) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"🔴🔴🔴 WINDOWS UNHANDLED EXCEPTION 🔴🔴🔴");
+                System.Diagnostics.Debug.WriteLine($"Message: {e.Message}");
+                System.Diagnostics.Debug.WriteLine($"Exception Type: {e.Exception.GetType()}");
+                System.Diagnostics.Debug.WriteLine($"Exception: {e.Exception}");
+                System.Diagnostics.Debug.WriteLine($"Stack Trace: {e.Exception.StackTrace}");
+
+                if (e.Exception.InnerException != null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Inner Exception: {e.Exception.InnerException}");
+                    System.Diagnostics.Debug.WriteLine($"Inner Stack Trace: {e.Exception.InnerException.StackTrace}");
+                }
+            };
+
             this.InitializeComponent();
         }
 

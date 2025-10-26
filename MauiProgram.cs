@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using PiClientV1.Services;
 
 namespace PiClientV1
 {
@@ -16,8 +17,11 @@ namespace PiClientV1
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
+         
+
+   
 
             return builder.Build();
         }

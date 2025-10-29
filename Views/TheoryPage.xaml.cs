@@ -1,9 +1,10 @@
-﻿namespace PiClientV1.Views;
-
-public partial class TheoryPage : ContentPage
+﻿namespace PiClientV1.Views
 {
-    public TheoryPage()
+    public partial class TheoryPage : ContentPage
     {
-        InitializeComponent();
+        public TheoryPage()
+        {
+            InitializeComponent();
+        }
     }
 }

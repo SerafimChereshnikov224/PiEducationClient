@@ -5,14 +5,222 @@
              Title="Нотация">
 
 	<ScrollView>
-		<VerticalStackLayout Padding="20" Spacing="15">
+		<VerticalStackLayout Padding="20" Spacing="25">
+
+			<!-- Заголовок -->
 			<Label Text="📝 Синтаксис π-исчисления"
                    FontSize="24"
                    FontAttributes="Bold"
-                   HorizontalOptions="Center"/>
-			<Label Text="Раздел в разработке..."
-                   FontSize="16"
-                   HorizontalOptions="Center"/>
+                   HorizontalOptions="Center"
+                   TextColor="#FFD700"
+                   BackgroundColor="#4B0082"
+                   Padding="15,10"
+                   HorizontalTextAlignment="Center"/>
+
+			<!-- Эталонные процессы -->
+			<Frame BackgroundColor="#E3F2FD" Padding="20">
+				<VerticalStackLayout Spacing="15">
+					<Label Text="🔷 Основные процессы"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#1976D2"/>
+
+					<VerticalStackLayout Spacing="12">
+						<!-- 0 -->
+						<HorizontalStackLayout Spacing="15">
+							<Label Text="0"
+                                   FontFamily="Courier"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#333"
+                                   WidthRequest="60"/>
+							<Label Text="Нулевой процесс"
+                                   FontSize="14"
+                                   TextColor="#333"
+                                   VerticalOptions="Center"/>
+						</HorizontalStackLayout>
+
+						<!-- P | Q -->
+						<HorizontalStackLayout Spacing="15">
+							<Label Text="P | Q"
+                                   FontFamily="Courier"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#333"
+                                   WidthRequest="60"/>
+							<Label Text="Параллельная композиция"
+                                   FontSize="14"
+                                   TextColor="#333"
+                                   VerticalOptions="Center"/>
+						</HorizontalStackLayout>
+
+						<!-- P . Q -->
+						<HorizontalStackLayout Spacing="15">
+							<Label Text="P | Q"
+                                   FontFamily="Courier"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#333"
+                                   WidthRequest="60"/>
+							<Label Text="Последовательная композиция"
+                                   FontSize="14"
+                                   TextColor="#333"
+                                   VerticalOptions="Center"/>
+						</HorizontalStackLayout>
+
+						<!-- a![b] -->
+						<HorizontalStackLayout Spacing="15">
+							<Label Text="a![b]"
+                                   FontFamily="Courier"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#333"
+                                   WidthRequest="60"/>
+							<Label Text="Отправка сообщения"
+                                   FontSize="14"
+                                   TextColor="#333"
+                                   VerticalOptions="Center"/>
+						</HorizontalStackLayout>
+
+						<!-- a?(x) -->
+						<HorizontalStackLayout Spacing="15">
+							<Label Text="a?(x)"
+                                   FontFamily="Courier"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#333"
+                                   WidthRequest="60"/>
+							<Label Text="Получение сообщения"
+                                   FontSize="14"
+                                   TextColor="#333"
+                                   VerticalOptions="Center"/>
+						</HorizontalStackLayout>
+
+						<!-- (νx)P -->
+						<HorizontalStackLayout Spacing="15">
+							<Label Text="(νx)P"
+                                   FontFamily="Courier"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#333"
+                                   WidthRequest="60"/>
+							<Label Text="Ограничение имени"
+                                   FontSize="14"
+                                   TextColor="#333"
+                                   VerticalOptions="Center"/>
+						</HorizontalStackLayout>
+					</VerticalStackLayout>
+				</VerticalStackLayout>
+			</Frame>
+
+			<!-- Каналы и сообщения -->
+			<Frame BackgroundColor="#F3E5F5" Padding="20">
+				<VerticalStackLayout Spacing="15">
+					<Label Text="🔗 Каналы и сообщения"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#7B1FA2"/>
+
+					<VerticalStackLayout Spacing="12">
+						<!-- a, b, c -->
+						<HorizontalStackLayout Spacing="15">
+							<Label Text="a, b, c"
+                                   FontFamily="Courier"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#333"
+                                   WidthRequest="60"/>
+							<Label Text="Имена каналов"
+                                   FontSize="14"
+                                   TextColor="#333"
+                                   VerticalOptions="Center"/>
+						</HorizontalStackLayout>
+
+						<!-- x, y, z -->
+						<HorizontalStackLayout Spacing="15">
+							<Label Text="x, y, z"
+                                   FontFamily="Courier"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#333"
+                                   WidthRequest="60"/>
+							<Label Text="Переменные"
+                                   FontSize="14"
+                                   TextColor="#333"
+                                   VerticalOptions="Center"/>
+						</HorizontalStackLayout>
+					</VerticalStackLayout>
+				</VerticalStackLayout>
+			</Frame>
+
+			<!-- λ-исчисление -->
+			<Frame BackgroundColor="#E8F5E8" Padding="20">
+				<VerticalStackLayout Spacing="15">
+					<Label Text="λ Лямбда-исчисление"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#1B5E20"/>
+
+					<VerticalStackLayout Spacing="12">
+						<!-- λx.f(x) -->
+						<HorizontalStackLayout Spacing="15">
+							<Label Text="λx.f(x)"
+                                   FontFamily="Courier"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#333"
+                                   WidthRequest="120"/>
+							<Label Text="Лямбда-абстракция"
+                                   FontSize="14"
+                                   TextColor="#333"
+                                   VerticalOptions="Center"/>
+						</HorizontalStackLayout>
+
+						<!-- let z = λx.f(x)-->
+						<HorizontalStackLayout Spacing="15">
+							<Label Text="let z = λx.f(x)"
+                                   FontFamily="Courier"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#333"
+                                   WidthRequest="120"/>
+							<Label Text="Вычисление и запись в перменную"
+                                   FontSize="14"
+                                   TextColor="#333"
+                                   VerticalOptions="Center"/>
+						</HorizontalStackLayout>
+
+						<!-- fun x -> f(x) -->
+						<HorizontalStackLayout Spacing="15">
+							<Label Text="fun x -> f(x)"
+                                   FontFamily="Courier"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#333"
+                                   WidthRequest="120"/>
+							<Label Text="Вычисление"
+                                   FontSize="14"
+                                   TextColor="#333"
+                                   VerticalOptions="Center"/>
+						</HorizontalStackLayout>
+
+						<!-- a!(fun x -> f(x)) -->
+						<HorizontalStackLayout Spacing="15">
+							<Label Text="!(fun x -> f(x))"
+                                   FontFamily="Courier"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#333"
+                                   WidthRequest="120"/>
+							<Label Text="Вычисление и отправка результата находу"
+                                   FontSize="14"
+                                   TextColor="#333"
+                                   VerticalOptions="Center"/>
+						</HorizontalStackLayout>
+					</VerticalStackLayout>
+				</VerticalStackLayout>
+			</Frame>
+
 		</VerticalStackLayout>
 	</ScrollView>
 

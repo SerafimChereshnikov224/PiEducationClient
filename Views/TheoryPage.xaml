@@ -5,14 +5,304 @@
              Title="Теория">
 
 	<ScrollView>
-		<VerticalStackLayout Padding="20" Spacing="15">
+		<VerticalStackLayout Padding="20" Spacing="25">
+
+			<!-- Заголовок -->
 			<Label Text="📚 Теория π-исчисления"
                    FontSize="24"
                    FontAttributes="Bold"
-                   HorizontalOptions="Center"/>
-			<Label Text="Раздел в разработке..."
-                   FontSize="16"
-                   HorizontalOptions="Center"/>
+                   HorizontalOptions="Center"
+                   TextColor="#FFD700"
+                   BackgroundColor="#4B0082"
+                   Padding="15,10"
+                   HorizontalTextAlignment="Center"/>
+
+			<!-- Пример 1: Let Process -->
+			<Frame BackgroundColor="#FFF3E0" Padding="20">
+				<VerticalStackLayout Spacing="15">
+					<Label Text="🔷 Пример 1: Let-процесс с λ-вычислением"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#E65100"/>
+
+					<!-- Исходный код -->
+					<Frame BackgroundColor="#F5F5F5" Padding="15">
+						<VerticalStackLayout Spacing="10">
+							<Label Text="Исходный процесс:"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="#666"/>
+							<Label Text="a![hello] | a?(x). let z = (λx.x) x . out![z]"
+                                   FontFamily="Courier"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="#333"
+                                   LineBreakMode="WordWrap"/>
+						</VerticalStackLayout>
+					</Frame>
+
+					<!-- Шаг 1 -->
+					<Frame BackgroundColor="#E8F5E8" Padding="15">
+						<VerticalStackLayout Spacing="10">
+							<Label Text="📝 Шаг 1: Коммуникация по каналу a"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#2E7D32"/>
+
+							<HorizontalStackLayout Spacing="10">
+								<Label Text="•" FontSize="14" TextColor="#2E7D32"/>
+								<Label Text="a![hello] отправляет 'hello' по каналу a"
+                                       FontSize="14"
+                                       TextColor="#333"
+                                       LineBreakMode="WordWrap"/>
+							</HorizontalStackLayout>
+
+							<HorizontalStackLayout Spacing="10">
+								<Label Text="•" FontSize="14" TextColor="#2E7D32"/>
+								<Label Text="a?(x) получает сообщение, x = 'hello'"
+                                       FontSize="14"
+                                       TextColor="#333"
+                                       LineBreakMode="WordWrap"/>
+							</HorizontalStackLayout>
+
+							<Frame BackgroundColor="#FFFFFF" Padding="10" Margin="10,5,0,0">
+								<Label Text="Состояние процесса: 0 | let z = (λx.x) hello . out![z]"
+                                       FontFamily="Courier"
+                                       FontSize="12"
+                                       TextColor="#E74C3C"
+                                       LineBreakMode="WordWrap"/>
+							</Frame>
+						</VerticalStackLayout>
+					</Frame>
+
+					<!-- Шаг 2 -->
+					<Frame BackgroundColor="#E3F2FD" Padding="15">
+						<VerticalStackLayout Spacing="10">
+							<Label Text="📝 Шаг 2: Вычисление λ-выражения"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#1976D2"/>
+
+							<HorizontalStackLayout Spacing="10">
+								<Label Text="•" FontSize="14" TextColor="#1976D2"/>
+								<Label Text="let z = (λx.x) hello вычисляет тождественную функцию"
+                                       FontSize="14"
+                                       TextColor="#333"
+                                       LineBreakMode="WordWrap"/>
+							</HorizontalStackLayout>
+
+							<HorizontalStackLayout Spacing="10">
+								<Label Text="•" FontSize="14" TextColor="#1976D2"/>
+								<Label Text="λx.x применяется к 'hello', возвращает 'hello'"
+                                       FontSize="14"
+                                       TextColor="#333"
+                                       LineBreakMode="WordWrap"/>
+							</HorizontalStackLayout>
+
+							<Frame BackgroundColor="#FFFFFF" Padding="10" Margin="10,5,0,0">
+								<Label Text="Состояние процесса: 0 | out![hello]"
+                                       FontFamily="Courier"
+                                       FontSize="12"
+                                       TextColor="#E74C3C"
+                                       LineBreakMode="WordWrap"/>
+							</Frame>
+						</VerticalStackLayout>
+					</Frame>
+
+					<!-- Шаг 3 -->
+					<Frame BackgroundColor="#F3E5F5" Padding="15">
+						<VerticalStackLayout Spacing="10">
+							<Label Text="📝 Шаг 3: Отправка результата"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#7B1FA2"/>
+
+							<HorizontalStackLayout Spacing="10">
+								<Label Text="•" FontSize="14" TextColor="#7B1FA2"/>
+								<Label Text="out![hello] отправляет 'hello' по каналу out"
+                                       FontSize="14"
+                                       TextColor="#333"
+                                       LineBreakMode="WordWrap"/>
+							</HorizontalStackLayout>
+
+							<Frame BackgroundColor="#FFFFFF" Padding="10" Margin="10,5,0,0">
+								<Label Text="Состояние процесса: 0 | 0"
+                                       FontFamily="Courier"
+                                       FontSize="12"
+                                       TextColor="#E74C3C"
+                                       LineBreakMode="WordWrap"/>
+							</Frame>
+						</VerticalStackLayout>
+					</Frame>
+
+				</VerticalStackLayout>
+			</Frame>
+
+			<!-- Пример 2: Lambda в Output -->
+			<Frame BackgroundColor="#E8F5E8" Padding="20">
+				<VerticalStackLayout Spacing="15">
+					<Label Text="🔷 Пример 2: λ-вычисление в сообщении"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#1B5E20"/>
+
+					<!-- Исходный код -->
+					<Frame BackgroundColor="#F5F5F5" Padding="15">
+						<VerticalStackLayout Spacing="10">
+							<Label Text="Исходный процесс:"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="#666"/>
+							<Label Text="a![(fun x -> x * 2) 5].0 | a?(y). out![y].0"
+                                   FontFamily="Courier"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="#333"
+                                   LineBreakMode="WordWrap"/>
+						</VerticalStackLayout>
+					</Frame>
+
+					<!-- Шаг 1 -->
+					<Frame BackgroundColor="#FFF3E0" Padding="15">
+						<VerticalStackLayout Spacing="10">
+							<Label Text="📝 Шаг 1: Вычисление λ-выражения"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#E65100"/>
+
+							<HorizontalStackLayout Spacing="10">
+								<Label Text="•" FontSize="14" TextColor="#E65100"/>
+								<Label Text="a![(fun x -> x * 2) 5] вычисляет функцию"
+                                       FontSize="14"
+                                       TextColor="#333"
+                                       LineBreakMode="WordWrap"/>
+							</HorizontalStackLayout>
+
+							<HorizontalStackLayout Spacing="10">
+								<Label Text="•" FontSize="14" TextColor="#E65100"/>
+								<Label Text="fun x -> x * 2 применяется к 5, результат: 10"
+                                       FontSize="14"
+                                       TextColor="#333"
+                                       LineBreakMode="WordWrap"/>
+							</HorizontalStackLayout>
+
+							<Frame BackgroundColor="#FFFFFF" Padding="10" Margin="10,5,0,0">
+								<Label Text="Состояние процесса: a![10].0 | a?(y). out![y].0"
+                                       FontFamily="Courier"
+                                       FontSize="12"
+                                       TextColor="#E74C3C"
+                                       LineBreakMode="WordWrap"/>
+							</Frame>
+						</VerticalStackLayout>
+					</Frame>
+
+					<!-- Шаг 2 -->
+					<Frame BackgroundColor="#E3F2FD" Padding="15">
+						<VerticalStackLayout Spacing="10">
+							<Label Text="📝 Шаг 2: Коммуникация по каналу a"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#1976D2"/>
+
+							<HorizontalStackLayout Spacing="10">
+								<Label Text="•" FontSize="14" TextColor="#1976D2"/>
+								<Label Text="a![10] отправляет 10 по каналу a"
+                                       FontSize="14"
+                                       TextColor="#333"
+                                       LineBreakMode="WordWrap"/>
+							</HorizontalStackLayout>
+
+							<HorizontalStackLayout Spacing="10">
+								<Label Text="•" FontSize="14" TextColor="#1976D2"/>
+								<Label Text="a?(y) получает сообщение, y = 10"
+                                       FontSize="14"
+                                       TextColor="#333"
+                                       LineBreakMode="WordWrap"/>
+							</HorizontalStackLayout>
+
+							<Frame BackgroundColor="#FFFFFF" Padding="10" Margin="10,5,0,0">
+								<Label Text="Состояние процесса: 0 | out![10].0"
+                                       FontFamily="Courier"
+                                       FontSize="12"
+                                       TextColor="#E74C3C"
+                                       LineBreakMode="WordWrap"/>
+							</Frame>
+						</VerticalStackLayout>
+					</Frame>
+
+					<!-- Шаг 3 -->
+					<Frame BackgroundColor="#F3E5F5" Padding="15">
+						<VerticalStackLayout Spacing="10">
+							<Label Text="📝 Шаг 3: Финальная отправка"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#7B1FA2"/>
+
+							<HorizontalStackLayout Spacing="10">
+								<Label Text="•" FontSize="14" TextColor="#7B1FA2"/>
+								<Label Text="out![10] отправляет 10 по каналу out"
+                                       FontSize="14"
+                                       TextColor="#333"
+                                       LineBreakMode="WordWrap"/>
+							</HorizontalStackLayout>
+
+							<Frame BackgroundColor="#FFFFFF" Padding="10" Margin="10,5,0,0">
+								<Label Text="Состояние процесса: 0 | 0"
+                                       FontFamily="Courier"
+                                       FontSize="12"
+                                       TextColor="##E74C3C"
+                                       LineBreakMode="WordWrap"/>
+							</Frame>
+						</VerticalStackLayout>
+					</Frame>
+
+				</VerticalStackLayout>
+			</Frame>
+
+			<!-- Ключевые выводы -->
+			<Frame BackgroundColor="#F8F9FA" Padding="20">
+				<VerticalStackLayout Spacing="15">
+					<Label Text="💡"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#2C3E50"/>
+
+					<VerticalStackLayout Spacing="10">
+						<HorizontalStackLayout Spacing="10">
+							<Label Text="•" FontSize="14" TextColor="#2C3E50"/>
+							<Label Text="λ-выражения вычисляются перед отправкой сообщений"
+                                   FontSize="14"
+                                   TextColor="#333"
+                                   LineBreakMode="WordWrap"/>
+						</HorizontalStackLayout>
+
+						<HorizontalStackLayout Spacing="10">
+							<Label Text="•" FontSize="14" TextColor="#2C3E50"/>
+							<Label Text="Коммуникация заменяет отправитель и получатель на 0"
+                                   FontSize="14"
+                                   TextColor="#333"
+                                   LineBreakMode="WordWrap"/>
+						</HorizontalStackLayout>
+
+						<HorizontalStackLayout Spacing="10">
+							<Label Text="•" FontSize="14" TextColor="#2C3E50"/>
+							<Label Text="Процесс завершается когда все подпроцессы становятся 0"
+                                   FontSize="14"
+                                   TextColor="#333"
+                                   LineBreakMode="WordWrap"/>
+						</HorizontalStackLayout>
+
+						<HorizontalStackLayout Spacing="10">
+							<Label Text="•" FontSize="14" TextColor="#2C3E50"/>
+							<Label Text="Переменные связываются значениями при получении сообщений"
+                                   FontSize="14"
+                                   TextColor="#333"
+                                   LineBreakMode="WordWrap"/>
+						</HorizontalStackLayout>
+					</VerticalStackLayout>
+				</VerticalStackLayout>
+			</Frame>
+
 		</VerticalStackLayout>
 	</ScrollView>
 

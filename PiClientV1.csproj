@@ -66,6 +66,12 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
 	</ItemGroup>
+	
+	<ItemGroup>
+		<Reference Include="PiServer">
+			<HintPath>libs\PiServer.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 
 	<ItemGroup>
 		<Folder Include="Services\" />

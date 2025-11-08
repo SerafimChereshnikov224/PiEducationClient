@@ -1,16 +1,18 @@
 ﻿using System.Net.Http.Json;
 using PiClientV1.Models;
-
+//using PiServer.version_2.controllers;
 namespace PiClientV1.Services;
 
 public class ApiService
 {
     private readonly HttpClient _httpClient;
+    //private readonly PiProcessApi piProcessApi;
 
     public ApiService()
     {
         try
         {
+            //piProcessApi.EvaluateLambda(new LambdaRequest());
             System.Diagnostics.Debug.WriteLine("=== ApiService constructor started ===");
 
             // Упрощаем создание HttpClient - убираем HTTPS для тестирования

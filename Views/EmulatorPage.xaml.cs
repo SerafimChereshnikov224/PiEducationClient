@@ -1,5 +1,4 @@
-﻿using PiClientV1.Models;
-using PiClientV1.Services;
+﻿using PiClientV1.Services;
 
 namespace PiClientV1.Views
 {
@@ -8,6 +7,7 @@ namespace PiClientV1.Views
         private string _currentSessionId = string.Empty;
         private bool _isProcessRunning = false;
         private int _stepCounter = 0;
+        private List<string> _executionHistory = new List<string>();
 
         public EmulatorPage()
         {
@@ -26,6 +26,9 @@ namespace PiClientV1.Views
         private void InitializeCollections()
         {
             ParallelActionsList.ItemsSource = new List<string> { "Нет активных действий" };
+            VariablesList.ItemsSource = new List<string> { "Нет переменных" };
+            ChannelStatesList.ItemsSource = new List<string> { "Нет данных о каналах" };
+            ActiveRestrictionsList.ItemsSource = new List<string> { "Нет активных ограничений" };
             HistoryList.ItemsSource = new List<string> { "История выполнения пуста" };
         }
 
@@ -40,7 +43,6 @@ namespace PiClientV1.Views
             try
             {
                 var processDefinition = ProcessInput.Text.Trim();
-
                 var apiService = new ApiService();
                 var response = await apiService.StartProcessAsync(processDefinition);
 
@@ -49,6 +51,7 @@ namespace PiClientV1.Views
                     _currentSessionId = response.SessionId;
                     _isProcessRunning = true;
                     _stepCounter = 0;
+                    _executionHistory.Clear();
 
                     SessionInfoLabel.Text = $"Сессия: {_currentSessionId}";
                     CurrentStateLabel.Text = response.CurrentState;
@@ -57,7 +60,17 @@ namespace PiClientV1.Views
                     StepButton.IsEnabled = true;
                     StartButton.IsEnabled = false;
 
+                    // Добавляем в историю
+                    _executionHistory.Add($"🚀 Процесс запущен: {processDefinition}");
+                    _executionHistory.Add($"📁 Сессия: {response.SessionId}");
+                    _executionHistory.Add($"📊 Начальное состояние: {response.CurrentState}");
+                    HistoryList.ItemsSource = new List<string>(_executionHistory);
+
                     await DisplayAlert("Успех", "Процесс запущен", "OK");
+                }
+                else
+                {
+                    await DisplayAlert("Ошибка", "Не удалось запустить процесс", "OK");
                 }
             }
             catch (Exception ex)
@@ -76,67 +89,111 @@ namespace PiClientV1.Views
 
             try
             {
-                var apiService = new ApiService();
-                var result = await apiService.ExecuteStepAsync(_currentSessionId);
+                System.Diagnostics.Debug.WriteLine($"=== OnStepClicked: sessionId={_currentSessionId} ===");
 
-                if (result != null)
+                var apiService = new ApiService();
+                var stepResult = await apiService.ExecuteStepAsync(_currentSessionId);
+
+                System.Diagnostics.Debug.WriteLine($"=== StepResult received: {stepResult != null} ===");
+                System.Diagnostics.Debug.WriteLine($"=== StepResult type: {stepResult?.GetType().Name} ===");
+
+                if (stepResult != null)
                 {
                     _stepCounter++;
 
-                    CurrentStateLabel.Text = result.CurrentState;
-                    LastActionLabel.Text = $"Последнее действие: {result.LastAction}";
+                    // ОБНОВЛЯЕМ ВСЕ ПОЛЯ ИЗ StepResult
+                    CurrentStateLabel.Text = stepResult.CurrentState;
+                    LastActionLabel.Text = $"Последнее действие: {stepResult.LastAction}";
 
-                    if (result.ParallelActions?.Any() == true)
+                    // Параллельные действия
+                    if (stepResult.ParallelActions?.Any() == true)
                     {
-                        ParallelActionsList.ItemsSource = result.ParallelActions;
+                        ParallelActionsList.ItemsSource = stepResult.ParallelActions;
+                    }
+                    else
+                    {
+                        ParallelActionsList.ItemsSource = new List<string> { "Нет параллельных действий" };
                     }
 
-                    var history = new List<string> { $"[Шаг {_stepCounter}] {result.LastAction}" };
-                    HistoryList.ItemsSource = history;
+                    // Переменные
+                    if (stepResult.Variables?.Any() == true)
+                    {
+                        var variables = stepResult.Variables.Select(v => $"{v.Key} = {v.Value}").ToList();
+                        VariablesList.ItemsSource = variables;
+                    }
+                    else
+                    {
+                        VariablesList.ItemsSource = new List<string> { "Нет переменных" };
+                    }
 
-                    if (result.IsCompleted)
+                    // Состояния каналов
+                    if (stepResult.ChannelStates?.Any() == true)
+                    {
+                        var channelStates = stepResult.ChannelStates.SelectMany(cs =>
+                            cs.Value.Select(value => $"{cs.Key}: {value}")).ToList();
+                        ChannelStatesList.ItemsSource = channelStates;
+                    }
+                    else
+                    {
+                        ChannelStatesList.ItemsSource = new List<string> { "Нет данных о каналах" };
+                    }
+
+                    // Активные ограничения
+                    if (stepResult.ActiveRestrictions?.Any() == true)
+                    {
+                        ActiveRestrictionsList.ItemsSource = stepResult.ActiveRestrictions;
+                    }
+                    else
+                    {
+                        ActiveRestrictionsList.ItemsSource = new List<string> { "Нет активных ограничений" };
+                    }
+
+                    // Добавляем в историю ВСЕ данные
+                    _executionHistory.Add($"--- Шаг {_stepCounter} ---");
+                    _executionHistory.Add($"📝 Действие: {stepResult.LastAction}");
+                    _executionHistory.Add($"📊 Состояние: {stepResult.CurrentState}");
+                    _executionHistory.Add($"✅ Завершен: {stepResult.IsCompleted}");
+
+                    if (stepResult.ParallelActions?.Any() == true)
+                    {
+                        _executionHistory.Add("🔄 Параллельные действия:");
+                        foreach (var action in stepResult.ParallelActions)
+                            _executionHistory.Add($"   - {action}");
+                    }
+
+                    if (stepResult.Variables?.Any() == true)
+                    {
+                        _executionHistory.Add("📝 Переменные:");
+                        foreach (var variable in stepResult.Variables)
+                            _executionHistory.Add($"   - {variable.Key} = {variable.Value}");
+                    }
+
+                    HistoryList.ItemsSource = new List<string>(_executionHistory);
+
+                    if (stepResult.IsCompleted)
                     {
                         _isProcessRunning = false;
                         StepButton.IsEnabled = false;
                         CompletionLabel.Text = "Статус: ✅ Процесс завершен";
+                        _executionHistory.Add("🎉 ПРОЦЕСС ЗАВЕРШЕН!");
+                        HistoryList.ItemsSource = new List<string>(_executionHistory);
                         await DisplayAlert("Завершено", "Процесс успешно завершен", "OK");
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert("Ошибка", $"Ошибка выполнения шага: {ex.Message}", "OK");
-            }
-        }
-
-        private async void OnRefreshStateClicked(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(_currentSessionId))
-            {
-                await DisplayAlert("Ошибка", "Сначала запустите процесс", "OK");
-                return;
-            }
-
-            try
-            {
-                var apiService = new ApiService();
-                var state = await apiService.GetStateAsync(_currentSessionId);
-
-                if (state != null)
+                else
                 {
-                    CurrentStateLabel.Text = state.CurrentState;
-                    if (state.IsCompleted)
-                    {
-                        _isProcessRunning = false;
-                        StepButton.IsEnabled = false;
-                        CompletionLabel.Text = "Статус: ✅ Завершено";
-                    }
-                    await DisplayAlert("Обновлено", "Состояние процесса обновлено", "OK");
+                    System.Diagnostics.Debug.WriteLine($"🔴 StepResult is NULL!");
+                    await DisplayAlert("Ошибка", "Не удалось выполнить шаг (вернулся null)", "OK");
                 }
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Ошибка", $"Ошибка обновления: {ex.Message}", "OK");
+                System.Diagnostics.Debug.WriteLine($"🔴 OnStepClicked ERROR: {ex}");
+                await DisplayAlert("Ошибка", $"Ошибка выполнения шага: {ex.Message}", "OK");
+
+                // Добавляем информацию об ошибке в историю
+                _executionHistory.Add($"❌ Ошибка на шаге {_stepCounter + 1}: {ex.Message}");
+                HistoryList.ItemsSource = new List<string>(_executionHistory);
             }
         }
 
@@ -145,6 +202,7 @@ namespace PiClientV1.Views
             _currentSessionId = string.Empty;
             _isProcessRunning = false;
             _stepCounter = 0;
+            _executionHistory.Clear();
 
             ProcessInput.Text = string.Empty;
             SessionInfoLabel.Text = "Сессия не запущена";

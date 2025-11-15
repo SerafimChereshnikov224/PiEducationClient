@@ -1,27 +1,26 @@
-﻿using System.Net.Http.Json;
-using PiClientV1.Models;
-using PiServer.Services;
+﻿using PiServer.version_2.controllers;
+using PiServer.version_2.models;
+using LearningRequest = PiServer.version_2.controllers.LearningRequest;
+using ProcessRequest = PiServer.version_2.controllers.ProcessRequest;
+using ProcessResponse = PiServer.version_2.controllers.ProcessResponse;
+using ProcessState = PiServer.version_2.controllers.ProcessState;
+using StepVerificationRequest = PiServer.version_2.controllers.StepVerificationRequest;
+using StepResult = PiServer.version_2.runtime.StepResult;
+using PiServer.version_2.controllers;
+using PiServer.version_2.models;
+
 namespace PiClientV1.Services;
 
 public class ApiService
 {
-    private readonly HttpClient _httpClient;
-    //private readonly PiProcessApi piProcessApi;
+    private readonly PiProcessApi _piProcessApi;
 
     public ApiService()
     {
         try
         {
-            //piProcessApi.EvaluateLambda(new LambdaRequest());
             System.Diagnostics.Debug.WriteLine("=== ApiService constructor started ===");
-
-            // Упрощаем создание HttpClient - убираем HTTPS для тестирования
-            _httpClient = new HttpClient();
-
-            // Меняем на HTTP для тестирования или убираем BaseAddress
-            _httpClient.BaseAddress = new Uri("http://localhost:7000/");
-            _httpClient.Timeout = TimeSpan.FromSeconds(10);
-
+            _piProcessApi = new PiProcessApi();
             System.Diagnostics.Debug.WriteLine("=== ApiService created successfully ===");
         }
         catch (Exception ex)
@@ -31,22 +30,21 @@ public class ApiService
         }
     }
 
+    // === МЕТОДЫ ДЛЯ ЭМУЛЯТОРА ===
     public async Task<ProcessResponse?> StartProcessAsync(string processDefinition, CancellationToken ct = default)
     {
         System.Diagnostics.Debug.WriteLine($"=== StartProcessAsync called: {processDefinition} ===");
 
         try
         {
-            // ЗАГЛУШКА: Сначала просто возвращаем тестовые данные без реального HTTP
-            await Task.Delay(500, ct);
-
-            System.Diagnostics.Debug.WriteLine("=== StartProcessAsync returning stub data ===");
-
-            return new ProcessResponse
+            var request = new ProcessRequest
             {
-                SessionId = Guid.NewGuid().ToString(),
-                CurrentState = processDefinition
+                ProcessDefinition = processDefinition
             };
+
+            var response = _piProcessApi.StartProcess(request);
+            System.Diagnostics.Debug.WriteLine("=== StartProcessAsync returning real data ===");
+            return response;
         }
         catch (Exception ex)
         {
@@ -61,18 +59,17 @@ public class ApiService
 
         try
         {
-            // ЗАГЛУШКА
-            await Task.Delay(300, ct);
+            var stepOutput = await _piProcessApi.ExecuteStepAsync(sessionId);
 
-            System.Diagnostics.Debug.WriteLine("=== ExecuteStepAsync returning stub data ===");
-
-            return new StepResult
+            // ПРЯМОЕ ПРИВЕДЕНИЕ ТИПА вместо as
+            if (stepOutput is StepResult stepResult)
             {
-                CurrentState = "0 | 0",
-                LastAction = "Выполнена коммуникация по каналу 'a'",
-                IsCompleted = true,
-                ParallelActions = new List<string> { "Отправка сообщения", "Получение сообщения" }
-            };
+                return stepResult;
+            }
+
+            // Если тип не StepResult, логируем и возвращаем null
+            System.Diagnostics.Debug.WriteLine($"🔴 ExecuteStepAsync: Unexpected type: {stepOutput?.GetType().Name}");
+            return null;
         }
         catch (Exception ex)
         {
@@ -87,18 +84,85 @@ public class ApiService
 
         try
         {
-            // ЗАГЛУШКА
-            await Task.Delay(200, ct);
-
-            return new ProcessState
-            {
-                CurrentState = "0 | 0",
-                IsCompleted = true
-            };
+            var state = _piProcessApi.GetState(sessionId);
+            return state;
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"🔴 GetStateAsync ERROR: {ex}");
+            return null;
+        }
+    }
+
+    // === МЕТОДЫ ДЛЯ ОБУЧЕНИЯ ===
+    public async Task<LearningStartResponse?> StartLearningSessionAsync(string processDefinition, string mode = "learning")
+    {
+        try
+        {
+            var request = new LearningRequest
+            {
+                ProcessDefinition = processDefinition,
+                Mode = mode
+            };
+
+            return _piProcessApi.StartLearningSession(request);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"🔴 StartLearningSessionAsync ERROR: {ex}");
+            return null;
+        }
+    }
+
+    public async Task<LearningStepResult?> ExecuteLearningStepAsync(string sessionId, string userInput)
+    {
+        try
+        {
+            var request = new StepVerificationRequest
+            {
+                UserInput = userInput
+            };
+
+            var result = await _piProcessApi.ExecuteLearningStepAsync(sessionId, request);
+
+            // ПРЯМОЕ ПРИВЕДЕНИЕ ТИПА вместо as
+            if (result is LearningStepResult learningStepResult)
+            {
+                return learningStepResult;
+            }
+
+            System.Diagnostics.Debug.WriteLine($"🔴 ExecuteLearningStepAsync: Unexpected type: {result?.GetType().Name}");
+            return null;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"🔴 ExecuteLearningStepAsync ERROR: {ex}");
+            return null;
+        }
+    }
+
+    public async Task<LearningHintResponse?> GetLearningHintAsync(string sessionId)
+    {
+        try
+        {
+            return _piProcessApi.GetLearningHint(sessionId);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"🔴 GetLearningHintAsync ERROR: {ex}");
+            return null;
+        }
+    }
+
+    public async Task<LearningStatusResponse?> GetLearningStatusAsync(string sessionId)
+    {
+        try
+        {
+            return _piProcessApi.GetLearningStatus(sessionId);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"🔴 GetLearningStatusAsync ERROR: {ex}");
             return null;
         }
     }

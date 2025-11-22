@@ -8,7 +8,7 @@
         <VerticalStackLayout Spacing="15" Padding="15">
 
             <!-- Заголовок -->
-            <Label Text="⚡ Эмулятор π-исчисления"
+            <Label Text="⚡ Эмулятор"
                    FontSize="24"
                    FontAttributes="Bold"
                    HorizontalOptions="Center"
@@ -32,31 +32,36 @@
                                 CornerRadius="20"
                                 FontSize="16"
                                 FontAttributes="Bold"
+                                TextColor="#000000"
                                 Clicked="OnExamplesClicked"/>
                     </Grid>
                     <Entry x:Name="ProcessInput"
                            Placeholder="a![b].0 | a?(x).0"
-                           FontSize="14"/>
+                           FontSize="14"
+                           TextColor="#000000"/>
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                         <Button x:Name="StartButton"
                                 Text="▶️ Запустить"
                                 BackgroundColor="#4CAF50"
+                                TextColor="#000000"
                                 Clicked="OnStartProcessClicked"/>
                         <Button x:Name="ResetButton"
                                 Grid.Column="1"
                                 Text="🔄 Сбросить"
                                 BackgroundColor="#FF9800"
+                                TextColor="#000000"
                                 Clicked="OnResetClicked"/>
                     </Grid>
                     <Button x:Name="StepButton"
                             Text="⏭️ Сделать шаг"
                             BackgroundColor="#2196F3"
+                            TextColor="#000000"
                             IsEnabled="False"
                             Clicked="OnStepClicked"/>
                     <Label x:Name="SessionInfoLabel"
                            Text="Сессия не запущена"
                            FontSize="12"
-                           TextColor="#666"/>
+                           TextColor="#000000"/>
                 </VerticalStackLayout>
             </Frame>
 
@@ -70,15 +75,16 @@
                     <Label x:Name="CurrentStateLabel"
                            Text="Введите процесс и нажмите 'Запустить'"
                            FontSize="14"
+                           TextColor="#000000"
                            LineBreakMode="WordWrap"/>
                     <Label x:Name="LastActionLabel"
                            Text="Последнее действие: —"
                            FontSize="12"
-                           TextColor="#27AE60"/>
+                           TextColor="#000000"/>
                     <Label x:Name="CompletionLabel"
                            Text="Статус: Ожидание запуска"
                            FontSize="12"
-                           TextColor="#E74C3C"/>
+                           TextColor="#000000"/>
                 </VerticalStackLayout>
             </Frame>
 
@@ -95,7 +101,7 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
-                                    <Label Text="{Binding .}" FontSize="12" Margin="10,2"/>
+                                    <Label Text="{Binding .}" FontSize="12" Margin="10,2" TextColor="#000000"/>
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -116,7 +122,7 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
-                                    <Label Text="{Binding .}" FontSize="11" Margin="10,1"/>
+                                    <Label Text="{Binding .}" FontSize="11" Margin="10,1" TextColor="#000000"/>
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -137,7 +143,7 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
-                                    <Label Text="{Binding .}" FontSize="11" Margin="10,1"/>
+                                    <Label Text="{Binding .}" FontSize="11" Margin="10,1" TextColor="#000000"/>
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -158,7 +164,7 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
-                                    <Label Text="{Binding .}" FontSize="11" Margin="10,1"/>
+                                    <Label Text="{Binding .}" FontSize="11" Margin="10,1" TextColor="#000000"/>
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -169,7 +175,7 @@
             <!-- История выполнения -->
             <Frame BackgroundColor="#F5F5F5" Padding="15">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="📖 История выполнения"
+                    <Label Text="📖 Журнал исполнения"
                            FontSize="16"
                            FontAttributes="Bold"
                            TextColor="#455A64"/>
@@ -179,7 +185,7 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
-                                    <Label Text="{Binding .}" FontSize="11" Margin="10,2"/>
+                                    <Label Text="{Binding .}" FontSize="11" Margin="10,2" TextColor="#000000"/>
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>

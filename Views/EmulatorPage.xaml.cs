@@ -1,4 +1,5 @@
 ﻿using PiClientV1.Services;
+using System.Collections.ObjectModel;
 
 namespace PiClientV1.Views
 {
@@ -25,11 +26,11 @@ namespace PiClientV1.Views
 
         private void InitializeCollections()
         {
-            ParallelActionsList.ItemsSource = new List<string> { "Нет активных действий" };
-            VariablesList.ItemsSource = new List<string> { "Нет переменных" };
-            ChannelStatesList.ItemsSource = new List<string> { "Нет данных о каналах" };
-            ActiveRestrictionsList.ItemsSource = new List<string> { "Нет активных ограничений" };
-            HistoryList.ItemsSource = new List<string> { "История выполнения пуста" };
+            ParallelActionsList.ItemsSource = new ObservableCollection<string> { "Нет активных действий" };
+            VariablesList.ItemsSource = new ObservableCollection<string> { "Нет переменных" };
+            ChannelStatesList.ItemsSource = new ObservableCollection<string> { "Нет данных о каналах" };
+            ActiveRestrictionsList.ItemsSource = new ObservableCollection<string> { "Нет активных ограничений" };
+            HistoryList.ItemsSource = new ObservableCollection<string> { "История выполнения пуста" };
         }
 
         private async void OnStartProcessClicked(object sender, EventArgs e)
@@ -64,7 +65,7 @@ namespace PiClientV1.Views
                     _executionHistory.Add($"🚀 Процесс запущен: {processDefinition}");
                     _executionHistory.Add($"📁 Сессия: {response.SessionId}");
                     _executionHistory.Add($"📊 Начальное состояние: {response.CurrentState}");
-                    HistoryList.ItemsSource = new List<string>(_executionHistory);
+                    HistoryList.ItemsSource = new ObservableCollection<string>(_executionHistory);
 
                     await DisplayAlert("Успех", "Процесс запущен", "OK");
                 }
@@ -95,63 +96,99 @@ namespace PiClientV1.Views
                 var stepResult = await apiService.ExecuteStepAsync(_currentSessionId);
 
                 System.Diagnostics.Debug.WriteLine($"=== StepResult received: {stepResult != null} ===");
-                System.Diagnostics.Debug.WriteLine($"=== StepResult type: {stepResult?.GetType().Name} ===");
 
                 if (stepResult != null)
                 {
                     _stepCounter++;
 
                     // ОБНОВЛЯЕМ ВСЕ ПОЛЯ ИЗ StepResult
-                    CurrentStateLabel.Text = stepResult.CurrentState;
-                    LastActionLabel.Text = $"Последнее действие: {stepResult.LastAction}";
+                    CurrentStateLabel.Text = stepResult.CurrentState ?? "Не указано";
+                    LastActionLabel.Text = $"Последнее действие: {stepResult.LastAction ?? "Не указано"}";
 
-                    // Параллельные действия
+                    // ДЕБАГ ИНФОРМАЦИЯ
+                    System.Diagnostics.Debug.WriteLine($"=== StepResult Data ===");
+                    System.Diagnostics.Debug.WriteLine($"CurrentState: {stepResult.CurrentState}");
+                    System.Diagnostics.Debug.WriteLine($"LastAction: {stepResult.LastAction}");
+                    System.Diagnostics.Debug.WriteLine($"IsCompleted: {stepResult.IsCompleted}");
+                    System.Diagnostics.Debug.WriteLine($"ParallelActions count: {stepResult.ParallelActions?.Count ?? 0}");
+                    System.Diagnostics.Debug.WriteLine($"Variables count: {stepResult.Variables?.Count ?? 0}");
+                    System.Diagnostics.Debug.WriteLine($"ChannelStates count: {stepResult.ChannelStates?.Count ?? 0}");
+                    System.Diagnostics.Debug.WriteLine($"ActiveRestrictions count: {stepResult.ActiveRestrictions?.Count ?? 0}");
+
+                    // Параллельные действия - используем ObservableCollection для обновления UI
+                    var parallelActions = new ObservableCollection<string>();
                     if (stepResult.ParallelActions?.Any() == true)
                     {
-                        ParallelActionsList.ItemsSource = stepResult.ParallelActions;
+                        foreach (var action in stepResult.ParallelActions)
+                        {
+                            parallelActions.Add(action);
+                        }
                     }
                     else
                     {
-                        ParallelActionsList.ItemsSource = new List<string> { "Нет параллельных действий" };
+                        parallelActions.Add("Нет параллельных действий");
                     }
+                    ParallelActionsList.ItemsSource = parallelActions;
 
-                    // Переменные
+                    // Переменные - используем ObservableCollection
+                    var variables = new ObservableCollection<string>();
                     if (stepResult.Variables?.Any() == true)
                     {
-                        var variables = stepResult.Variables.Select(v => $"{v.Key} = {v.Value}").ToList();
-                        VariablesList.ItemsSource = variables;
+                        foreach (var variable in stepResult.Variables)
+                        {
+                            variables.Add($"{variable.Key} = {variable.Value}");
+                        }
                     }
                     else
                     {
-                        VariablesList.ItemsSource = new List<string> { "Нет переменных" };
+                        variables.Add("Нет переменных");
                     }
+                    VariablesList.ItemsSource = variables;
 
-                    // Состояния каналов
+                    // Состояния каналов - используем ObservableCollection
+                    var channelStates = new ObservableCollection<string>();
                     if (stepResult.ChannelStates?.Any() == true)
                     {
-                        var channelStates = stepResult.ChannelStates.SelectMany(cs =>
-                            cs.Value.Select(value => $"{cs.Key}: {value}")).ToList();
-                        ChannelStatesList.ItemsSource = channelStates;
+                        foreach (var channel in stepResult.ChannelStates)
+                        {
+                            if (channel.Value?.Any() == true)
+                            {
+                                foreach (var value in channel.Value)
+                                {
+                                    channelStates.Add($"{channel.Key}: {value}");
+                                }
+                            }
+                            else
+                            {
+                                channelStates.Add($"{channel.Key}: нет данных");
+                            }
+                        }
                     }
                     else
                     {
-                        ChannelStatesList.ItemsSource = new List<string> { "Нет данных о каналах" };
+                        channelStates.Add("Нет данных о каналах");
                     }
+                    ChannelStatesList.ItemsSource = channelStates;
 
-                    // Активные ограничения
+                    // Активные ограничения - используем ObservableCollection
+                    var activeRestrictions = new ObservableCollection<string>();
                     if (stepResult.ActiveRestrictions?.Any() == true)
                     {
-                        ActiveRestrictionsList.ItemsSource = stepResult.ActiveRestrictions;
+                        foreach (var restriction in stepResult.ActiveRestrictions)
+                        {
+                            activeRestrictions.Add(restriction);
+                        }
                     }
                     else
                     {
-                        ActiveRestrictionsList.ItemsSource = new List<string> { "Нет активных ограничений" };
+                        activeRestrictions.Add("Нет активных ограничений");
                     }
+                    ActiveRestrictionsList.ItemsSource = activeRestrictions;
 
                     // Добавляем в историю ВСЕ данные
-                    _executionHistory.Add($"--- Шаг {_stepCounter} ---");
-                    _executionHistory.Add($"📝 Действие: {stepResult.LastAction}");
-                    _executionHistory.Add($"📊 Состояние: {stepResult.CurrentState}");
+                    _executionHistory.Add($"============== ШАГ {_stepCounter} ==============");
+                    _executionHistory.Add($"📝 Действие: {stepResult.LastAction ?? "Не указано"}");
+                    _executionHistory.Add($"📊 Состояние: {stepResult.CurrentState ?? "Не указано"}");
                     _executionHistory.Add($"✅ Завершен: {stepResult.IsCompleted}");
 
                     if (stepResult.ParallelActions?.Any() == true)
@@ -168,7 +205,39 @@ namespace PiClientV1.Views
                             _executionHistory.Add($"   - {variable.Key} = {variable.Value}");
                     }
 
-                    HistoryList.ItemsSource = new List<string>(_executionHistory);
+                    if (stepResult.ChannelStates?.Any() == true)
+                    {
+                        _executionHistory.Add("📡 Состояния каналов:");
+                        foreach (var channel in stepResult.ChannelStates)
+                        {
+                            if (channel.Value?.Any() == true)
+                            {
+                                foreach (var value in channel.Value)
+                                    _executionHistory.Add($"   - {channel.Key}: {value}");
+                            }
+                            else
+                            {
+                                _executionHistory.Add($"   - {channel.Key}: нет данных");
+                            }
+                        }
+                    }
+
+                    if (stepResult.ActiveRestrictions?.Any() == true)
+                    {
+                        _executionHistory.Add("🚫 Активные ограничения:");
+                        foreach (var restriction in stepResult.ActiveRestrictions)
+                            _executionHistory.Add($"   - {restriction}");
+                    }
+
+                    // Используем ObservableCollection для истории
+                    HistoryList.ItemsSource = new ObservableCollection<string>(_executionHistory);
+
+                    // Прокручиваем историю к последнему элементу
+                    if (HistoryList.ItemsSource is ObservableCollection<string> historyCollection && historyCollection.Any())
+                    {
+                        var lastItem = historyCollection.Last();
+                        HistoryList.ScrollTo(lastItem, ScrollToPosition.End, false);
+                    }
 
                     if (stepResult.IsCompleted)
                     {
@@ -176,8 +245,12 @@ namespace PiClientV1.Views
                         StepButton.IsEnabled = false;
                         CompletionLabel.Text = "Статус: ✅ Процесс завершен";
                         _executionHistory.Add("🎉 ПРОЦЕСС ЗАВЕРШЕН!");
-                        HistoryList.ItemsSource = new List<string>(_executionHistory);
+                        HistoryList.ItemsSource = new ObservableCollection<string>(_executionHistory);
                         await DisplayAlert("Завершено", "Процесс успешно завершен", "OK");
+                    }
+                    else
+                    {
+                        CompletionLabel.Text = "Статус: 🟡 Выполняется";
                     }
                 }
                 else
@@ -193,7 +266,7 @@ namespace PiClientV1.Views
 
                 // Добавляем информацию об ошибке в историю
                 _executionHistory.Add($"❌ Ошибка на шаге {_stepCounter + 1}: {ex.Message}");
-                HistoryList.ItemsSource = new List<string>(_executionHistory);
+                HistoryList.ItemsSource = new ObservableCollection<string>(_executionHistory);
             }
         }
 

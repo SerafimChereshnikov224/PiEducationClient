@@ -8,7 +8,7 @@
 		<VerticalStackLayout Padding="15" Spacing="15">
 
 			<!-- Заголовок -->
-			<Label Text="🎓 Режим обучения π-исчислению"
+			<Label Text="🎓 Режим обучения"
                    FontSize="24"
                    FontAttributes="Bold"
                    HorizontalOptions="Center"
@@ -24,6 +24,7 @@
 
 					<Picker x:Name="ModePicker"
                             Title="Выберите режим"
+                            TextColor="#000000"
                             SelectedIndexChanged="OnModeChanged">
 						<Picker.Items>
 							<x:String>learning</x:String>
@@ -34,7 +35,7 @@
 					<Label x:Name="ModeDescriptionLabel"
                            Text="Режим обучения: вы вводите каждый шаг вручную"
                            FontSize="12"
-                           TextColor="#388E3C"/>
+                           TextColor="#000000"/>
 				</VerticalStackLayout>
 			</Frame>
 
@@ -48,11 +49,13 @@
 
 					<Entry x:Name="ProcessInput"
                            Placeholder="a![b].0 | a?(x).0"
-                           FontSize="14"/>
+                           FontSize="14"
+                           TextColor="#000000"/>
 
 					<Button x:Name="StartLearningButton"
                             Text="🎯 Начать обучение"
                             BackgroundColor="#4CAF50"
+                            TextColor="#000000"
                             Clicked="OnStartLearningClicked"/>
 				</VerticalStackLayout>
 			</Frame>
@@ -70,16 +73,18 @@
 
 					<Label x:Name="SessionIdLabel"
                            Text="Сессия: ..."
-                           FontSize="12"/>
+                           FontSize="12"
+                           TextColor="#000000"/>
 
 					<Label x:Name="CurrentStateLabel"
                            Text="Состояние: ..."
-                           FontSize="12"/>
+                           FontSize="12"
+                           TextColor="#000000"/>
 
 					<Label x:Name="HintLabel"
                            Text="Подсказка: ..."
                            FontSize="12"
-                           TextColor="#FF9800"/>
+                           TextColor="#000000"/>
 				</VerticalStackLayout>
 			</Frame>
 
@@ -97,22 +102,25 @@
 					<Label x:Name="TaskDescriptionLabel"
                            Text="Опишите следующий шаг вычисления..."
                            FontSize="12"
-                           TextColor="#9C27B0"/>
+                           TextColor="#000000"/>
 
 					<Entry x:Name="StepInput"
                            Placeholder="Введите ваш шаг..."
-                           FontSize="14"/>
+                           FontSize="14"
+                           TextColor="#000000"/>
 
 					<Grid ColumnDefinitions="*,*" ColumnSpacing="10">
 						<Button x:Name="SubmitStepButton"
                                 Text="✅ Проверить шаг"
                                 BackgroundColor="#9C27B0"
+                                TextColor="#000000"
                                 Clicked="OnSubmitStepClicked"/>
 
 						<Button x:Name="GetHintButton"
                                 Grid.Column="1"
                                 Text="💡 Подсказка"
                                 BackgroundColor="#BA68C8"
+                                TextColor="#000000"
                                 Clicked="OnGetHintClicked"/>
 					</Grid>
 				</VerticalStackLayout>
@@ -127,15 +135,18 @@
 					<Label x:Name="ResultLabel"
                            Text="Результат проверки..."
                            FontSize="16"
-                           FontAttributes="Bold"/>
+                           FontAttributes="Bold"
+                           TextColor="#000000"/>
 
 					<Label x:Name="FeedbackLabel"
                            Text="Обратная связь..."
-                           FontSize="12"/>
+                           FontSize="12"
+                           TextColor="#000000"/>
 
 					<Label x:Name="ExplanationLabel"
                            Text="Объяснение..."
-                           FontSize="12"/>
+                           FontSize="12"
+                           TextColor="#000000"/>
 				</VerticalStackLayout>
 			</Frame>
 
@@ -152,11 +163,13 @@
 
 					<Label x:Name="StepCurrentStateLabel"
                            Text="Состояние: ..."
-                           FontSize="12"/>
+                           FontSize="12"
+                           TextColor="#000000"/>
 
 					<Label x:Name="StepLastActionLabel"
                            Text="Последнее действие: ..."
-                           FontSize="12"/>
+                           FontSize="12"
+                           TextColor="#000000"/>
 				</VerticalStackLayout>
 			</Frame>
 
@@ -177,7 +190,7 @@
 						<ListView.ItemTemplate>
 							<DataTemplate>
 								<ViewCell>
-									<Label Text="{Binding .}" FontSize="11" Margin="10,1"/>
+									<Label Text="{Binding .}" FontSize="11" Margin="10,1" TextColor="#000000"/>
 								</ViewCell>
 							</DataTemplate>
 						</ListView.ItemTemplate>
@@ -202,7 +215,7 @@
 						<ListView.ItemTemplate>
 							<DataTemplate>
 								<ViewCell>
-									<Label Text="{Binding .}" FontSize="11" Margin="10,1"/>
+									<Label Text="{Binding .}" FontSize="11" Margin="10,1" TextColor="#000000"/>
 								</ViewCell>
 							</DataTemplate>
 						</ListView.ItemTemplate>
@@ -216,7 +229,7 @@
                    Padding="15"
                    IsVisible="False">
 				<VerticalStackLayout Spacing="10">
-					<Label Text="📖 История обучения"
+					<Label Text="📖  Журнал исполнения"
                            FontSize="16"
                            FontAttributes="Bold"
                            TextColor="#455A64"/>
@@ -227,7 +240,7 @@
 						<ListView.ItemTemplate>
 							<DataTemplate>
 								<ViewCell>
-									<Label Text="{Binding .}" FontSize="11" Margin="10,2"/>
+									<Label Text="{Binding .}" FontSize="11" Margin="10,2" TextColor="#000000"/>
 								</ViewCell>
 							</DataTemplate>
 						</ListView.ItemTemplate>
@@ -240,12 +253,14 @@
 				<Button x:Name="RefreshButton"
                         Text="🔄 Обновить"
                         BackgroundColor="#FF9800"
+                        TextColor="#000000"
                         Clicked="OnRefreshClicked"/>
 
 				<Button x:Name="ResetButton"
                         Grid.Column="1"
                         Text="🔄 Сбросить"
                         BackgroundColor="#F44336"
+                        TextColor="#000000"
                         Clicked="OnResetClicked"/>
 			</Grid>
 

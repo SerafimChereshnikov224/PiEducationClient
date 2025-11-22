@@ -134,10 +134,10 @@ namespace PiClientV1.Views
                     HintLabel.Text = $"Подсказка: {result.Hint ?? "Нет подсказки"}";
 
                     // 6. Добавляем в историю ВСЕ данные
-                    _learningHistory.Add($"--- Шаг: {StepInput.Text} ---");
+                    _learningHistory.Add($"============== ШАГ: {StepInput.Text} ==============");
                     _learningHistory.Add($"✅ Правильно: {result.IsUserStepCorrect}");
-                    _learningHistory.Add($"💬 Feedback: {result.Feedback}");
-                    _learningHistory.Add($"📖 Explanation: {result.Explanation}");
+                    _learningHistory.Add($"💬 Фидбек: {result.Feedback}");
+                    _learningHistory.Add($"📖 Объяснение: {result.Explanation}");
                     _learningHistory.Add($"📊 State: {result.CurrentState}");
                     _learningHistory.Add($"📝 Action: {result.LastAction}");
 
